@@ -1,5 +1,5 @@
 import random
-from csvMethods import getDeckIndex, getWinrate
+from csvMethods import getDeckIndex, getWinrate, getRandomLineup
 
 def runSimulation(deck1, deck2, deck3, deck4, deck5, deck6):
     deck1Index = getDeckIndex(deck1)
@@ -23,11 +23,30 @@ def runSimulation(deck1, deck2, deck3, deck4, deck5, deck6):
             player2Decks.remove(player2Choice)
 
     if len(player1Decks) == 0:
-        print("PLayer 1 wins")
+        #print("Player1 wins vs " + deck4 + ", " + deck5 + ", " + deck6)
         return 1
     elif len(player2Decks) == 0:
-        print("Player 2 wins")
+        #print("Player1 loses vs " + deck4 + ", " + deck5 + ", " + deck6)
         return 2
     else:
         print("somehow nobody won")
         return 0
+
+def runSimulationMultiple(deck1, deck2, deck3, deck4, deck5, deck6, sets):
+    n = 0
+    wins = 0
+    while n < sets:
+        if runSimulation(deck1, deck2, deck3, deck4, deck5, deck6) == 1:
+            wins = wins + 1
+        n = n + 1
+    return 100 * wins / sets
+
+def runSimulationVsAll(deck1, deck2, deck3, sets):
+    n = 0
+    wins = 0
+    while n < sets:
+        opponentDecks = getRandomLineup()
+        if runSimulation(deck1, deck2, deck3, opponentDecks[0], opponentDecks[1], opponentDecks[2]) == 1:
+            wins = wins + 1
+        n = n + 1
+    return 100 * wins / sets
